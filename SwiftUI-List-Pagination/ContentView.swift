@@ -9,8 +9,38 @@
 import SwiftUI
 
 struct ContentView : View {
+    @EnvironmentObject private var viewModel: RowDataViewModel
+    @State private var pageIndex = 0
+    private let count = 30
+
     var body: some View {
-        Text("Hello World")
+
+        NavigationView {
+
+            List {
+                ForEach(self.viewModel.rowDataModels) { rowData in
+
+                    if rowData.isEndIndex {
+                        ListRow(model: rowData)
+                            .onAppear{
+                                self.pageIndex += 1
+                                self.viewModel.fetch(page: self.pageIndex, count: self.count)
+                                print("==========\(self.pageIndex)==========")
+                        }
+                    } else{
+                        ListRow(model: rowData)
+                    }
+                }
+                LoadingRow(isLoading: true)
+                }
+                .navigationBarTitle(Text("Pagination:\(pageIndex)"), displayMode: .large)
+            }
+            .onAppear {
+                guard self.viewModel.rowDataModels.isEmpty else {
+                    return
+                }
+                self.viewModel.fetch(page: self.pageIndex, count: self.count)
+        }
     }
 }
 
