@@ -29,7 +29,7 @@ func fetchData(page: Int, count: Int) -> AnyPublisher<([RowData]), RequestError>
         } else {
 
             // In the sample we are delaying purposely
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
                 _ = subscriber.receive(models)
                 subscriber.receive(completion: .finished)
             }

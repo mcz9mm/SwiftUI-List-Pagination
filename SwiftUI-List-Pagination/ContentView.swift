@@ -11,23 +11,22 @@ import SwiftUI
 struct ContentView : View {
     @EnvironmentObject private var viewModel: RowDataViewModel
     @State private var pageIndex = 0
-    private let count = 30
+    private let count = 20
 
     var body: some View {
 
         NavigationView {
-
             List {
                 ForEach(self.viewModel.rowDataModels) { rowData in
-
                     if rowData.isEndIndex {
-                        ListRow(model: rowData)
-                            .onAppear{
+                        ListRow(model: rowData).onAppear {
+                            if !self.viewModel.isLoading {
                                 self.pageIndex += 1
                                 self.viewModel.fetch(page: self.pageIndex, count: self.count)
                                 print("==========\(self.pageIndex)==========")
+                            }
                         }
-                    } else{
+                    } else {
                         ListRow(model: rowData)
                     }
                 }

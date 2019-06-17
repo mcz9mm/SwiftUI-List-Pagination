@@ -19,7 +19,19 @@ final class RowDataViewModel: BindableObject {
         }
     }
 
+    private(set) var isLoading = false {
+        didSet {
+            didChange.send(self)
+        }
+    }
+
     func fetch(page: Int, count: Int) {
+
+        guard !isLoading else {
+            return
+        }
+
+        isLoading = true
 
         fetchData(page: page, count: count)
             .map { $0 }
@@ -45,6 +57,7 @@ final class RowDataViewModel: BindableObject {
         lastModel.isEndIndex = true
         tmpModels[models.count - 1] = lastModel
 
-        self.rowDataModels = tmpModels
+        isLoading = false
+        rowDataModels = tmpModels
     }
 }
