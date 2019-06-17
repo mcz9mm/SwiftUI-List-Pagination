@@ -42,7 +42,7 @@ struct LoadingView: UIViewRepresentable {
 
 LoadingRow
 
-```
+```swift
 struct LoadingRow : View {
     @State var isLoading: Bool
 
